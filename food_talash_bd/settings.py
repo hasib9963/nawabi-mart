@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-1b11whn#q9u+s_165zy!yl9ihauipd28&ngiwba_$kaju2@n20
 DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
-CSRF_TRUSTED_ORIGINS = ['https://food-talash-bd.onrender.com','https://*.127.0.0.1']
+CSRF_TRUSTED_ORIGINS = ['https://nawabi-mart.onrender.com','https://*.127.0.0.1']
 
 # Application definition
 
