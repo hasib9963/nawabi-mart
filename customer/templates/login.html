@@ -1,0 +1,274 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+
+<head>
+	<title>Login</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+	<link href="https://fonts.googleapis.com/css?family=Lato:300,400,700&display=swap" rel="stylesheet">
+
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+	<!-- favicon -->
+	<link rel="shortcut icon" type="image/png" href="{% static 'assets/img/Nawabii.png' %}">
+	<!-- google font -->
+	<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Poppins:400,700&display=swap" rel="stylesheet">
+	<!-- fontawesome -->
+	<link rel="stylesheet" href="{% static 'assets/css/all.min.css' %}">
+	<!-- bootstrap -->
+	<link rel="stylesheet" href="{% static 'assets/bootstrap/css/bootstrap.min.css' %}">
+	<!-- owl carousel -->
+	<link rel="stylesheet" href="{% static 'assets/css/owl.carousel.css' %}">
+	<!-- magnific popup -->
+	<link rel="stylesheet" href="{% static 'assets/css/magnific-popup.css' %}">
+	<!-- animate css -->
+	<link rel="stylesheet" href="{% static 'assets/css/animate.css' %}">
+	<!-- mean menu css -->
+	<link rel="stylesheet" href="{% static 'assets/css/meanmenu.min.css' %}">
+	<!-- main style -->
+	<link rel="stylesheet" href="{% static 'assets/css/main.css' %}">
+	<!-- responsive -->
+	<link rel="stylesheet" href="{% static 'assets/css/responsive.css' %}">
+
+	<link rel="stylesheet" href="{% static "assets/css/styles.css" %}">
+
+</head>
+
+<body class="img js-fullheight" style="background-image: url({% static "assets/img/bg.jpg" %});">
+	<!--PreLoader-->
+	<div class="loader">
+		<div class="loader-inner">
+			<div class="circle"></div>
+		</div>
+	</div>
+	<!--PreLoader Ends-->
+
+	<!-- header -->
+	<div class="top-header-area" id="sticker">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-12 col-sm-12 text-center">
+					<div class="main-menu-wrap">
+						<!-- logo -->
+						<div class="site-logo">
+							<a href="{% url "home" %}">
+								<img src="{% static 'assets/img/Nawabii.png' %}" alt="logo">
+							</a>
+						</div>
+						<!-- logo -->
+
+						<!-- menu start -->
+						<nav class="main-menu">
+							<ul>
+								<li class="current-list-item"><a href="{% url 'home' %}">Home</a></li>
+								<li><a href="{% url 'about' %}">About</a></li>
+								<li><a href="{% url 'contact' %}">Contact</a></li>
+								<li><a href="{% url 'shop' %}">Shop</a>
+								</li>
+								<li>
+									<div class="header-icons">
+										<a class="shopping-cart" href="{% url 'cart' %}">
+											<i class="fas fa-shopping-cart"></i>
+											{% if user.is_authenticated %}
+											{% with cart=user.cart %}
+											<span class="cart-count">{{ cart.items.count }}</span>
+											{% endwith %}
+											{% endif %}
+										</a>
+									</div>
+								</li>
+								<li>
+									<div class="header-icons">
+										<a class="mobile-hide account-icon" href="#"><i class="fas fa-user"></i></a>
+										<ul class="sub-menu">
+											{% if user.is_authenticated %}
+											<li><a href="{% url "logout" %}">Logout</a></li>
+											<li><a href="{% url "user_orders" %}">Orders</a></li>
+											{% else %}
+											<li><a href="{% url "register" %}">Signup</a></li>
+											<li><a href="{% url "login" %}">Log In</a></li>
+											{% endif %}
+										</ul>
+									</div>
+								</li>
+							</ul>
+						</nav>
+						<a class="mobile-show search-bar-icon" href="#"><i class="fas fa-search"></i></a>
+						<div class="mobile-menu"></div>
+						<!-- menu end -->
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- end header -->
+
+	<!-- Log in sectiomn -->
+	<section class="ftco-section">
+		<div class="container">
+			<div class="row justify-content-center">
+				<div class="col-md-6 text-center mb-5">
+					<h2 class="heading-section">Login</h2>
+				</div>
+			</div>
+			<div class="row justify-content-center">
+				<div class="col-md-6 col-lg-4">
+					<div class="login-wrap p-0">
+						<h3 class="mb-4 text-center">Have an account?</h3>
+						<form method="POST" class="signin-form">
+							{% csrf_token %}
+							{% if form.non_field_errors %}
+							<div class="alert alert-danger">
+								{{ form.non_field_errors }}
+							</div>
+							{% endif %}
+							<div class="form-group">
+								<input type="text" name="username" class="form-control" placeholder="Username" required
+									value="{{ form.username.value|default_if_none:'' }}">
+								{% if form.username.errors %}
+								<div class="alert alert-danger">
+									{{ form.username.errors.0 }}
+								</div>
+								{% endif %}
+							</div>
+							<div class="form-group">
+								<input id="password-field" type="password" name="password" class="form-control"
+									placeholder="Password" required>
+								<span toggle="#password-field"
+									class="fa fa-fw fa-eye field-icon toggle-password"></span>
+								{% if form.password.errors %}
+								<div class="alert alert-danger">
+									{{ form.password.errors.0 }}
+								</div>
+								{% endif %}
+							</div>
+							<div class="form-group">
+								<button type="submit" class="form-control btn btn-primary submit px-3">Sign In</button>
+							</div>
+							<div class="form-group d-md-flex">
+								<div class="w-50">
+									<label class="checkbox-wrap checkbox-primary">Remember Me
+										<input type="checkbox" checked>
+										<span class="checkmark"></span>
+									</label>
+								</div>
+								<div class="w-50 text-md-right">
+									<a href="#" style="color: #fff">Forgot Password</a>
+								</div>
+							</div>
+						</form>
+						<p class="w-100 text-center"><a href="{% url "register" %}">&mdash; Or Sign Up Here &mdash;</a>
+						</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<!-- end log in section -->
+
+	<!-- footer -->
+	<div class="footer-area">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-md-6">
+                    <div class="footer-box about-widget">
+                        <h2 class="widget-title">About us</h2>
+                        <p>Ut enim ad minim veniam perspiciatis unde omnis iste natus error sit voluptatem accusantium
+                            doloremque laudantium, totam rem aperiam, eaque ipsa quae.</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="footer-box get-in-touch">
+                        <h2 class="widget-title">Get in Touch</h2>
+                        <ul>
+                            <li>G.L Roy Road, Sadar, Rangpur-5400</li>
+                            <li>support@foodtalashbd.com</li>
+                            <li>+00 111 222 3333</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="footer-box pages">
+                        <h2 class="widget-title">Pages</h2>
+                        <ul>
+                            <li><a href="{% url 'home' %}">Home</a></li>
+                            <li><a href="{% url 'about' %}">About</a></li>
+                            <li><a href="{% url 'shop' %}">Shop</a></li>
+                            <li><a href="{% url 'contact' %}">Contact</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="footer-box subscribe">
+                        <h2 class="widget-title">Subscribe</h2>
+                        <p>Subscribe to our mailing list to get the latest updates.</p>
+                        <form action="index.html">
+                            <input type="email" placeholder="Email">
+                            <button type="submit"><i class="fas fa-paper-plane"></i></button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end footer -->
+
+    <!-- copyright -->
+    <div class="copyright">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 col-md-12">
+                    <p>Copyrights &copy; 2024 - <a href="https://imransdesign.com/">Hasib Hasan</a>, All Rights
+                        Reserved.<br>
+                    </p>
+                </div>
+                <div class="col-lg-6 text-right col-md-12">
+                    <div class="social-icons">
+                        <ul>
+                            <li><a href="#" target="_blank"><i class="fab fa-facebook-f"></i></a></li>
+                            <li><a href="#" target="_blank"><i class="fab fa-twitter"></i></a></li>
+                            <li><a href="#" target="_blank"><i class="fab fa-instagram"></i></a></li>
+                            <li><a href="#" target="_blank"><i class="fab fa-linkedin"></i></a></li>
+                            <li><a href="#" target="_blank"><i class="fab fa-dribbble"></i></a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+	
+	<!-- end copyright -->
+
+	<!-- jquery -->
+	<script src="{% static 'assets/js/jquery-1.11.3.min.js' %}"></script>
+	<!-- bootstrap -->
+	<script src="{% static 'assets/bootstrap/js/bootstrap.min.js' %}"></script>
+	<!-- count down -->
+	<script src="{% static 'assets/js/jquery.countdown.js' %}"></script>
+	<!-- isotope -->
+	<script src="{% static 'assets/js/jquery.isotope-3.0.6.min.js' %}"></script>
+	<!-- waypoints -->
+	<script src="{% static 'assets/js/waypoints.js' %}"></script>
+	<!-- owl carousel -->
+	<script src="{% static 'assets/js/owl.carousel.min.js' %}"></script>
+	<!-- magnific popup -->
+	<script src="{% static 'assets/js/jquery.magnific-popup.min.js' %}"></script>
+	<!-- mean menu -->
+	<script src="{% static 'assets/js/jquery.meanmenu.min.js' %}"></script>
+	<!-- sticker js -->
+	<script src="{% static 'assets/js/sticker.js' %}"></script>
+	<!-- main js -->
+	<script src="{% static 'assets/js/main.js' %}"></script>
+
+	<script src="{% static "assest/customjs/jquery.min.js" %}"></script>
+	<script src="{% static "assest/customjs/popper.js" %}"></script>
+	<script src="{% static "assest/customjs/bootstrap.min.js" %}"></script>
+	<script src="{% static "assest/customjs/main.js" %}"></script>
+
+</body>
+
+</html>
