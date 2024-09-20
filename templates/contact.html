@@ -118,10 +118,11 @@
                                     </div>
                                 </li>
                                 <li>
-                                    <div class="header-icons">
+                                    <div class="header-icons d-flex">
                                         <a class="mobile-hide account-icon" href="#"><i class="fas fa-user"></i></a>
                                         <ul class="sub-menu">
                                             {% if user.is_authenticated %}
+                                            <li><a href="{% url "profile" %}">Profile</a></li>
                                             <li><a href="{% url "logout" %}">Logout</a></li>
                                             <li><a href="{% url "user_orders" %}">Orders</a></li>
                                             {% else %}
@@ -129,6 +130,7 @@
                                             <li><a href="{% url "login" %}">Log In</a></li>
                                             {% endif %}
                                         </ul>
+                                        <p class="text-white mt-3">({{user.username}})</p>
                                     </div>
                                 </li>
                             </ul>
