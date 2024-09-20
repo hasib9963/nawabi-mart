@@ -91,8 +91,18 @@
                                     </div>                                    
                                 </li>
                                 <li>
-                                    <div class="header-icons d-flex">
-                                        <a class="mobile-hide account-icon" href="#"><i class="fas fa-user"></i></a>
+                                    <div class="header-icons">
+                                        {% if user.profile.profile_image %}
+                                            <a class="mobile-hide account-icon" href="#"><img src="{{ user.profile.profile_image.url }}" class="rounded-circle" width="25" /></a>
+                                        {% else %}
+                                            <a class="mobile-hide account-icon" href="#"><img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="Admin"
+                                                class="rounded-circle" width="25" /></a>
+                                        {% endif %}
+                                        {% if user.is_authenticated %}
+                                            <a class="mobile-hide account-icon" href="#">{{user.username}}</i></a>
+                                        {% else %}
+                                            <a class="mobile-hide account-icon" href="#">Signup / Login</i></a>
+                                        {% endif %}   
                                         <ul class="sub-menu">
                                             {% if user.is_authenticated %}
                                             <li><a href="{% url "profile" %}">Profile</a></li>
@@ -103,13 +113,10 @@
                                             <li><a href="{% url "login" %}">Log In</a></li>
                                             {% endif %}
                                         </ul>
-                                        <p class="text-white mt-3">({{user.username}})</p>
                                     </div>
                                 </li>
                             </ul>
                         </nav>
-                        <a class="mobile-show search-bar-icon" href="#"><i class="fas fa-search"></i></a>
-                        <div class="mobile-menu"></div>
                         <!-- menu end -->
                     </div>
                 </div>
