@@ -8,8 +8,46 @@ from django.shortcuts import render, redirect, get_object_or_404
 from products.models import Product
 from .models import Cart, CartItem
 
+# def add_to_cart(request, product_id):
+#     product = get_object_or_404(Product, id=product_id)
+#     if request.user.is_authenticated:
+#         cart, created = Cart.objects.get_or_create(user=request.user)
+#         cart_item, created = CartItem.objects.get_or_create(cart=cart, product=product)
+#         if not created:
+#             cart_item.quantity += 1
+#             cart_item.save()
+        
+#         if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+#             # Respond with JSON for AJAX requests
+#             return JsonResponse({
+#                 'success': True,
+#                 'message': 'Product added to cart.',
+#                 'cart_count': cart.items.count()
+#             })
+#         else:
+#             return redirect('home')  # Redirect to cart page for authenticated users
+#     else:
+#         # Handle session-based cart for non-authenticated users
+#         cart = request.session.get('cart', {})
+#         if str(product_id) not in cart:
+#             cart[str(product_id)] = {'quantity': 1, 'price': str(product.price)}
+#         else:
+#             cart[str(product_id)]['quantity'] += 1
+#         request.session['cart'] = cart  # Update the session
+
+#         if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+#             # Respond with JSON for AJAX requests
+#             return JsonResponse({
+#                 'success': True,
+#                 'message': 'Product added to cart.',
+#                 'cart_count': len(request.session['cart'])
+#             })
+#         else:
+#             return redirect('home') 
+
 def add_to_cart(request, product_id):
     product = get_object_or_404(Product, id=product_id)
+    next_url = request.GET.get('next', 'home')  # Default to 'home' if no next URL is provided
 
     if request.user.is_authenticated:
         cart, created = Cart.objects.get_or_create(user=request.user)
@@ -26,7 +64,7 @@ def add_to_cart(request, product_id):
                 'cart_count': cart.items.count()
             })
         else:
-            return redirect('home')  # Redirect to cart page for authenticated users
+            return redirect(next_url)  # Redirect to the referring page
     else:
         # Handle session-based cart for non-authenticated users
         cart = request.session.get('cart', {})
@@ -44,7 +82,7 @@ def add_to_cart(request, product_id):
                 'cart_count': len(request.session['cart'])
             })
         else:
-            return redirect('home') 
+            return redirect(next_url)  # Redirect to the referring page
 
 
 def view_cart(request):
@@ -109,6 +147,7 @@ def remove_from_cart(request, item_id):
     return redirect('cart')
 
 
+
 def update_cart(request):
     if request.method == 'POST':
         if request.user.is_authenticated:
@@ -116,27 +155,32 @@ def update_cart(request):
             cart, created = Cart.objects.get_or_create(user=request.user)
             for item_id, quantity in request.POST.items():
                 if item_id.startswith('item_'):
-                    item_id = item_id.split('_')[1]
+                    product_id = item_id.split('_')[1]  # Get the product ID from the input field name
                     quantity = int(quantity)
-                    cart_item = get_object_or_404(CartItem, id=item_id, cart=cart)
-                    if quantity <= 0:
-                        cart_item.delete()
-                    else:
-                        cart_item.quantity = quantity
-                        cart_item.save()
+                    product = get_object_or_404(Product, id=product_id)  # Fetch the product by ID
+                    
+                    # Find the CartItem for this product and cart
+                    cart_item = CartItem.objects.filter(cart=cart, product=product).first()
+
+                    if cart_item:
+                        if quantity <= 0:
+                            cart_item.delete()  # Remove the cart item if quantity is 0
+                        else:
+                            cart_item.quantity = quantity  # Update the quantity
+                            cart_item.save()
         else:
             # For non-authenticated users (session-based cart)
             session_cart = request.session.get('cart', {})
             for item_id, quantity in request.POST.items():
                 if item_id.startswith('item_'):
-                    item_id = item_id.split('_')[1]
+                    product_id = item_id.split('_')[1]
                     quantity = int(quantity)
                     
-                    if item_id in session_cart:
+                    if product_id in session_cart:
                         if quantity <= 0:
-                            del session_cart[item_id]  # Remove the item if the quantity is 0 or less
+                            del session_cart[product_id]  # Remove the item if the quantity is 0 or less
                         else:
-                            session_cart[item_id]['quantity'] = quantity  # Update the quantity
+                            session_cart[product_id]['quantity'] = quantity  # Update the quantity
             request.session['cart'] = session_cart  # Update the session
 
         return redirect('cart')

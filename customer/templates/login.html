@@ -70,15 +70,24 @@
 								</li>
 								<li>
 									<div class="header-icons">
-										<a class="shopping-cart" href="{% url 'cart' %}">
-											<i class="fas fa-shopping-cart"></i>
-											{% if user.is_authenticated %}
-											{% with cart=user.cart %}
-											<span class="cart-count">{{ cart.items.count }}</span>
-											{% endwith %}
-											{% endif %}
-										</a>
-									</div>
+                                        <a class="shopping-cart" href="{% url 'cart' %}">
+                                            <i class="fas fa-shopping-cart"></i>
+                                            
+                                            {% if user.is_authenticated %}
+                                                {% with cart=user.cart %}
+                                                    <span class="cart-count">{{ cart.items.count }}</span>
+                                                {% endwith %}
+                                            {% else %}
+                                                {% with session_cart=request.session.cart %}
+                                                    {% if session_cart %}
+                                                        <span class="cart-count">{{ session_cart|length }}</span>
+                                                    {% else %}
+                                                        <span class="cart-count">0</span>
+                                                    {% endif %}
+                                                {% endwith %}
+                                            {% endif %}
+                                        </a>
+                                    </div> 
 								</li>
 								<li>
 									<div class="header-icons">

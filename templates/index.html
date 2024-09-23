@@ -246,7 +246,7 @@
             </div>
 
             <div class="row">
-                {% for pdc in data %}
+                {% for pdc in data|slice:":3" %}
                 <div class="col-lg-4 col-md-6 text-center">
                     <div class="single-product-item">
                         <div class="product-image">
@@ -254,7 +254,7 @@
                         </div>
                         <h3>{{pdc.title}}</h3>
                         <p class="product-price"><span>Per Kg</span> {{pdc.price}}$ </p>
-                        <a href="{% url 'add_to_cart' pdc.id %}" class="cart-btn">
+                        <a href="{% url 'add_to_cart' pdc.id %}?next={{ request.path }}" class="cart-btn">
                             <i class="fas fa-shopping-cart"></i> Add to Cart
                         </a>
 
