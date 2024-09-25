@@ -64,11 +64,10 @@
                         <!-- menu start -->
                         <nav class="main-menu">
                             <ul>
-                                <li class="current-list-item"><a href="{% url 'home' %}">Home</a></li>
-                                <li><a href="{% url 'about' %}">About</a></li>
-                                <li><a href="{% url 'contact' %}">Contact</a></li>
-                                <li><a href="{% url 'shop' %}">Shop</a>
-                                </li>
+                                <li class="{% if request.path == '/' %}current-list-item{% endif %}"><a href="{% url 'home' %}">Home</a></li>
+                                <li class="{% if request.path == '/about/' %}current-list-item{% endif %}"><a href="{% url 'about' %}">About</a></li>
+                                <li class="{% if request.path == '/contact/' %}current-list-item{% endif %}"><a href="{% url 'contact' %}">Contact</a></li>
+                                <li class="{% if request.path == '/shop/' %}current-list-item{% endif %}"><a href="{% url 'shop' %}">Shop</a></li>
                                 <li>
                                     <div class="header-icons">
                                         <a class="shopping-cart" href="{% url 'cart' %}">
@@ -382,7 +381,7 @@
                 <div class="col-lg-6 col-md-12">
                     <div class="abt-text">
                         <p class="top-sub">Since Year 2019</p>
-                        <h3>We are <span class="orange-text">Food Talash BD</span></h3>
+                        <h3>We are <span class="orange-text">Nawabi Mart</span></h3>
                         <p>Etiam vulputate ut augue vel sodales. In sollicitudin neque et massa porttitor vestibulum ac
                             vel nisi. Vestibulum placerat eget dolor sit amet posuere. In ut dolor aliquet, aliquet
                             sapien sed, interdum velit. Nam eu molestie lorem.</p>
