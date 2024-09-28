@@ -8,43 +8,6 @@ from django.shortcuts import render, redirect, get_object_or_404
 from products.models import Product
 from .models import Cart, CartItem
 
-# def add_to_cart(request, product_id):
-#     product = get_object_or_404(Product, id=product_id)
-#     if request.user.is_authenticated:
-#         cart, created = Cart.objects.get_or_create(user=request.user)
-#         cart_item, created = CartItem.objects.get_or_create(cart=cart, product=product)
-#         if not created:
-#             cart_item.quantity += 1
-#             cart_item.save()
-        
-#         if request.headers.get('x-requested-with') == 'XMLHttpRequest':
-#             # Respond with JSON for AJAX requests
-#             return JsonResponse({
-#                 'success': True,
-#                 'message': 'Product added to cart.',
-#                 'cart_count': cart.items.count()
-#             })
-#         else:
-#             return redirect('home')  # Redirect to cart page for authenticated users
-#     else:
-#         # Handle session-based cart for non-authenticated users
-#         cart = request.session.get('cart', {})
-#         if str(product_id) not in cart:
-#             cart[str(product_id)] = {'quantity': 1, 'price': str(product.price)}
-#         else:
-#             cart[str(product_id)]['quantity'] += 1
-#         request.session['cart'] = cart  # Update the session
-
-#         if request.headers.get('x-requested-with') == 'XMLHttpRequest':
-#             # Respond with JSON for AJAX requests
-#             return JsonResponse({
-#                 'success': True,
-#                 'message': 'Product added to cart.',
-#                 'cart_count': len(request.session['cart'])
-#             })
-#         else:
-#             return redirect('home') 
-
 def add_to_cart(request, product_id):
     product = get_object_or_404(Product, id=product_id)
     next_url = request.GET.get('next', 'home')  # Default to 'home' if no next URL is provided
@@ -262,7 +225,7 @@ def place_order(request):
         cart.delete()  # Optionally delete the cart
 
         # Redirect to the success page
-        return redirect('checkout_success')
+        return redirect('payment')
 
     return redirect('checkout')
 
@@ -305,33 +268,6 @@ def user_orders(request):
     }
     
     return render(request, 'orders.html', context)
-
-
-
-# if you want tp clear item when user added to cart as a login user 
-
-# from django.contrib.auth.signals import user_logged_in
-# from django.dispatch import receiver
-
-# @receiver(user_logged_in)
-# def merge_cart_on_login(sender, request, user, **kwargs):
-#     # Check if the session has a cart
-#     session_cart = request.session.get('cart', None)
-    
-#     if session_cart:
-#         # Get or create the cart for the logged-in user
-#         cart, created = Cart.objects.get_or_create(user=user)
-        
-#         # Clear the user's previous cart items
-#         cart.items.all().delete()
-
-#         # Add the session cart items to the user's cart
-#         for prod_id, details in session_cart.items():
-#             product = get_object_or_404(Product, id=prod_id)
-#             CartItem.objects.create(cart=cart, product=product, quantity=details['quantity'])
-        
-#         # Clear the session cart
-#         del request.session['cart']
 
 
 # if you want to keep items when user added to cart as a login user with non login user 

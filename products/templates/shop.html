@@ -163,7 +163,7 @@
                     <div class="col-lg-4 col-md-6 text-center {{ pdc.category.slug }}">
                         <div class="single-product-item">
                             <div class="product-image">
-                                <a href="single-product.html"><img src="{{pdc.image.url}}" alt=""></a>
+                                <a href="{% url 'product_details' pdc.id %}"><img src="{{pdc.image.url}}" alt=""></a>
                             </div>
                             <h3>{{pdc.title}}</h3>
                             <p class="product-price"><span>Per Kg</span> {{pdc.price}}$ </p>

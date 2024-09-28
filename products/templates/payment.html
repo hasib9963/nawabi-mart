@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Payment</title>
+    <link rel="stylesheet" href="{% static "assets/css/payment.css" %}" />
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
+    />
+  </head>
+
+  <body>
+    <div class="container-fluid px-0" id="bg-div">
+      <div class="row justify-content-center">
+        <div class="col-lg-9 col-12">
+          <div class="card card0">
+            <div class="d-flex" id="wrapper">
+              <!-- Sidebar -->
+              <div class="bg-light border-right" id="sidebar-wrapper">
+                <div class="sidebar-heading pt-5 pb-4">
+                  <strong>PAY WITH</strong>
+                </div>
+                <div class="list-group list-group-flush">
+                  <a
+                    data-toggle="tab"
+                    href="#menu1"
+                    id="tab1"
+                    class="tabs list-group-item bg-light"
+                  >
+                    <div class="list-div my-2">
+                      <div class="fa fa-home"></div>
+                      &nbsp;&nbsp; Bank
+                    </div>
+                  </a>
+                  <a
+                    data-toggle="tab"
+                    href="#menu2"
+                    id="tab2"
+                    class="tabs list-group-item active1"
+                  >
+                    <div class="list-div my-2">
+                      <div class="fa fa-credit-card"></div>
+                      &nbsp;&nbsp; Card
+                    </div>
+                  </a>
+                  <a
+                    data-toggle="tab"
+                    href="#menu3"
+                    id="tab3"
+                    class="tabs list-group-item bg-light"
+                  >
+                    <div class="list-div my-2">
+                      <div class="fa fa-qrcode"></div>
+                      &nbsp;&nbsp;&nbsp; Bkash QR
+                      <span id="new-label">NEW</span>
+                    </div>
+                  </a>
+                </div>
+              </div>
+              <!-- Page Content -->
+              <div id="page-content-wrapper">
+                <div class="row pt-3" id="border-btm">
+                  <div class="col-4">
+                    <button
+                      class="btn btn-success mt-4 ml-3 mb-3"
+                      id="menu-toggle"
+                    >
+                      <div class="bar4"></div>
+                      <div class="bar4"></div>
+                      <div class="bar4"></div>
+                    </button>
+                  </div>
+                  <div class="col-8">
+                    <div class="row justify-content-right">
+                      <div class="col-12">
+                        {% comment %} <p class="mb-0 mr-4 mt-4 text-right">
+                          customer@email.com
+                        </p> {% endcomment %}
+                      </div>
+                    </div>
+                    <div class="row justify-content-right">
+                      <div class="col-12">
+                        {% comment %} <p class="mb-0 mr-4 text-right">
+                          Pay <span class="top-highlight">$ 100</span>
+                        </p> {% endcomment %}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Tabs Content -->
+                <div class="tab-content">
+                  <!-- Bank tab -->
+                  <div id="menu1" class="tab-pane fade">
+                    <div class="row justify-content-center">
+                      <div class="col-11">
+                        <div class="form-card">
+                          <h3 class="mt-0 mb-4 text-center">
+                            Enter bank details to pay
+                          </h3>
+                          <form>
+                            <div class="form-group">
+                              <label for="bankName">Bank Name</label>
+                              <input
+                                type="text"
+                                class="form-control"
+                                id="bankName"
+                                placeholder="Enter bank name"
+                              />
+                            </div>
+                            <div class="form-group">
+                              <label for="accountNumber">Account Number</label>
+                              <input
+                                type="text"
+                                class="form-control"
+                                id="accountNumber"
+                                placeholder="Enter account number"
+                              />
+                            </div>
+                            <a href="{% url "payment_success" %}"
+                              class="btn btn-primary btn-block"
+                            >
+                              Pay with Bank
+                            </a>
+                          </form>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- Card tab -->
+                  <div id="menu2" class="tab-pane fade show active">
+                    <div class="row justify-content-center">
+                      <div class="col-11">
+                        <div class="form-card">
+                          <h3 class="mt-0 mb-4 text-center">
+                            Enter your card details to pay
+                          </h3>
+                          <form>
+                            <div class="form-group">
+                              <label for="cardNumber">Card Number</label>
+                              <input
+                                type="text"
+                                class="form-control"
+                                id="cardNumber"
+                                placeholder="Enter card number"
+                              />
+                            </div>
+                            <div class="form-group">
+                              <label for="cardExpiry">Expiry Date</label>
+                              <input
+                                type="text"
+                                class="form-control"
+                                id="cardExpiry"
+                                placeholder="MM/YY"
+                              />
+                            </div>
+                            <div class="form-group">
+                              <label for="cardCVV">CVV</label>
+                              <input
+                                type="text"
+                                class="form-control"
+                                id="cardCVV"
+                                placeholder="Enter CVV"
+                              />
+                            </div>
+                            <a href="{% url "payment_success" %}" class="btn btn-primary btn-block">Pay with Card</a>
+                          </form>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- Visa QR tab -->
+                  <div id="menu3" class="tab-pane fade">
+                    <div class="row justify-content-center">
+                      <div class="col-11">
+                        <h3 class="mt-0 mb-4 text-center">
+                          Scan the QR code to pay with bkash
+                        </h3>
+                        <div class="row justify-content-center">
+                          <div id="qr">
+                            <img
+                              src="{% static "assets/img/payment.jpg" %}"
+                              width="300px"
+                              height="300px"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- end of tab-content -->
+              </div>
+              <!-- end of page-content-wrapper -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.bundle.min.js"></script>
+
+    <script src="{% static "assets/js/payment.js" %}"></script>
+  </body>
+</html>
